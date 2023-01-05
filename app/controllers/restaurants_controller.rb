@@ -11,8 +11,13 @@ class RestaurantsController < ApplicationController
 
   def create
     @restaurant = Restaurant.new(restaurant_params)
-    @restaurant.save
-    redirect_to restaurant_path(@restaurant)
+    # assigns a newly created but unsaved restaurant as @restaurant (FAILED - 1)
+    if @restaurant.save
+      redirect_to restaurant_path(@restaurant)
+    else
+      @restaurant = Restaurant.new
+      render :new, status: :unprocessable_entity
+    end
   end
 
   def show
